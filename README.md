@@ -170,4 +170,6 @@ The `index.html` file displays trends with a clean UI:
 Developed by **Prashant-1008** as a project to explore automation and web scraping techniques.
 ```
 
-Feel free to customize the README further to suit your project’s style or structure!
+
+
+
