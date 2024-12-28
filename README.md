@@ -19,7 +19,11 @@ A Python-based web application to scrape and display trending Twitter topics usi
 ---
 ## Demo 
 
+- Initial Phase : 
+
 ![Twitter-Trends-Scraper-12-27-2024_07_08_PM](https://github.com/user-attachments/assets/3aa7553c-c053-4cd2-aac4-204750ac405a)
+
+https://github.com/user-attachments/assets/558b4dfd-9168-4bbb-a763-3e30df483939
 
 ---
 
