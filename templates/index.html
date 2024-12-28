@@ -105,14 +105,14 @@
                 }
 
                 const resultsHtml = `
-                    <h2>Most Trending Topics (${new Date(data.timestamp).toLocaleString()})</h2>
+                    <h2>These are the most happening topics as on : (${new Date(data.timestamp).toLocaleString()})</h2>
                     <ul style="list-style: none; padding: 0;">
                         ${trendsList}
                     </ul>
                     <p>The IP address used for this query was : <strong>${escapeHtml(data.client_ip)}</strong></p>
                     <h3>MongoDB Record:</h3>
                     <pre>${escapeHtml(JSON.stringify(data, null, 2))}</pre>
-                    <a href="#" id="scrapeButton">Refresh Trends</a>
+                    <a href="#" id="scrapeButton">Click here to run the query again</a>
                 `;
 
                 results.innerHTML = resultsHtml;
