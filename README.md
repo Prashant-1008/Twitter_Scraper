@@ -2,6 +2,7 @@
 # Twitter Trends Scraper
 
 A Python-based web application to scrape and display trending Twitter topics using Selenium, Flask, and MongoDB.
+(ProxyMesh's Free version is creating errors. So it is excluded)
 
 ## Table of Contents
 
