@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twitter Trends Scraper</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .results { 
+            margin-top: 20px; 
+        }
+        .trend-item { 
+            margin: 10px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+        }
+        .trend-rank { 
+            font-weight: bold; 
+            color: #1DA1F2; 
+            margin-right: 10px;
+        }
+        .trend-posts { 
+            color: #657786;
+            font-size: 0.9em;
+            margin-left: 10px;
+        }
+        .error { 
+            color: #dc3545;
+            padding: 15px;
+            border: 1px solid #dc3545;
+            border-radius: 8px;
+            background-color: #f8d7da;
+        }
+        #scrapeButton {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #1DA1F2;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        #scrapeButton:hover {
+            background-color: #1a91da;
+        }
+        .loading {
+            display: none;
+            margin: 20px 0;
+            color: #666;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Twitter Trends Scraper</h1>
+    <a href="#" id="scrapeButton">Click here to run the script</a>
+    <div class="loading" id="loading">Loading trends... Please wait.</div>
+    <div class="results" id="results"></div>
+
+    <script>
+        document.getElementById('scrapeButton').addEventListener('click', async (e) => {
+            e.preventDefault();
+            const loading = document.getElementById('loading');
+            const results = document.getElementById('results');
+            const button = document.getElementById('scrapeButton');
+            
+            try {
+                loading.style.display = 'block';
+                results.innerHTML = '';
+                button.style.opacity = '0.5';
+                button.style.pointerEvents = 'none';
+                
+                const response = await fetch('/scrape');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+
+                let trendsList = '';
+                for (let i = 1; i <= 5; i++) {
+                    const trendKey = `nameoftrend${i}`;
+                    const trend = data[trendKey];
+                    if (trend) {
+                        trendsList += `
+                            <li class="trend-item">
+                                <span class="trend-rank">#${escapeHtml(trend.rank)}</span>
+                                <span class="trend-name">${escapeHtml(trend.name)}</span>
+                                <span class="trend-posts">(${escapeHtml(trend.posts)})</span>
+                            </li>`;
+                    }
+                }
+
+                const resultsHtml = `
+                    <h2>Most Trending Topics (${new Date(data.timestamp).toLocaleString()})</h2>
+                    <ul style="list-style: none; padding: 0;">
+                        ${trendsList}
+                    </ul>
+                    <p>The IP address used for this query was : <strong>${escapeHtml(data.client_ip)}</strong></p>
+                    <h3>MongoDB Record:</h3>
+                    <pre>${escapeHtml(JSON.stringify(data, null, 2))}</pre>
+                    <a href="#" id="scrapeButton">Refresh Trends</a>
+                `;
+
+                results.innerHTML = resultsHtml;
+            } catch (error) {
+                results.innerHTML = `
+                    <div class="error">
+                        <p>Error fetching trends: ${escapeHtml(error.message)}</p>
+                    </div>
+                `;
+            } finally {
+                loading.style.display = 'none';
+                button.style.opacity = '1';
+                button.style.pointerEvents = 'auto';
+            }
+        });
+
+        // Security: Escape HTML to prevent XSS
+        function escapeHtml(unsafe) {
+            return unsafe
+                .toString()
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+    </script>
+</body>
+</html>
