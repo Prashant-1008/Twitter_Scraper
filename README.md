@@ -40,7 +40,7 @@ https://github.com/user-attachments/assets/6fe199f7-dccf-488c-8a54-f23b2dc6e1b7
 
 ---
 
-- Deployment Phase (Almost Done) : https://twittertrendscrape.vercel.app/
+- [ADDITIONAL] Deployment Phase (Almost Done) : https://twittertrendscrape.vercel.app/
 
 ---
 
